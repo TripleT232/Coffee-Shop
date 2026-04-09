@@ -1,127 +1,66 @@
-import React, { createContext, useCallback, useContext, useEffect,  useMemo,  useState} from 'react'
-import authenticationService from '../services/authentication.service'
-import { getUserProfile } from '../services/user.service'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-const AuthContext = createContext(null)
+const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [accessToken, setAccessToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // 🔥 INIT AUTH (khi load app)
+  // ===== Load user từ localStorage =====
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        const token = localStorage.getItem('accessToken')
+    try {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser)
 
-        if (!token) {
-          setLoading(false)
-          return
-        }
+        // normalize role
+        parsed.role = parsed.role?.toUpperCase?.()
 
-        setAccessToken(token)
-
-        // 👉 Lấy profile user
-        const res = await getUserProfile()
-
-        if (res?.user) {
-          setUser(res.user)
-        } else {
-          throw new Error('Invalid token')
-        }
-
-      } catch (error) {
-        console.log('Auth error:', error)
-
-        // ❌ Token lỗi → clear
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('cart')
-
-        setUser(null)
-        setAccessToken(null)
-      } finally {
-        setLoading(false)
+        setUser(parsed)
       }
+    } catch (e) {
+      console.error('Parse user error', e)
+    } finally {
+      setLoading(false)
     }
-
-    initAuth()
   }, [])
 
-  // 🔐 LOGIN
-  const login = useCallback(async (credentials) => {
-    const res = await authenticationService.login(credentials)
+  // ===== LOGIN =====
+  const login = (userData, token) => {
+    const normalizedUser = {
+      ...userData,
+      role: userData.role?.toUpperCase?.()
+    }
 
-    const token = res?.accessToken || res?.token
-
-    if (!token) throw new Error('Login failed')
-
-    // lưu token
+    localStorage.setItem('user', JSON.stringify(normalizedUser))
     localStorage.setItem('accessToken', token)
-    setAccessToken(token)
 
-    // lấy user
-    try {
-      const profile = await getUserProfile()
-      if (profile?.user) {
-        setUser(profile.user)
-      }
-    } catch (err) {
-      console.log('Fetch profile failed:', err)
-      if (res?.user) setUser(res.user)
-    }
+    setUser(normalizedUser)
+  }
 
-    return res
-  }, [])
-
-  // 🚪 LOGOUT
-  const logout = useCallback(() => {
-    try {
-      // clear local data
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('cart') // 🛒 cart của cafe
-      localStorage.removeItem('voucher')
-    } catch (err) {
-      console.error('Logout error:', err)
-    }
-
+  // ===== LOGOUT =====
+  const logout = () => {
+    localStorage.removeItem('user')
+    localStorage.removeItem('accessToken')
     setUser(null)
-    setAccessToken(null)
-  }, [])
+  }
 
-  // 🧠 CHECK ROLE
-  const isAdmin = user?.role === 'admin'
-  const isStaff = user?.role === 'staff'
-
-  // 📦 CONTEXT VALUE
-  const value = useMemo(() => ({
-    user,
-    accessToken,
-    loading,
-
-    isAuthenticated: !!accessToken,
-    isAdmin,
-    isStaff,
-
-    login,
-    logout,
-    setUser
-  }), [user, accessToken, loading, login, logout])
+  const isAuthenticated = !!user
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        isAuthenticated,
+        login,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
 }
 
-// 🔥 HOOK
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider')
-  }
-  return context
-}
-
-export default AuthContext
+// ===== Hook =====
+export const useAuth = () => useContext(AuthContext)

@@ -1,21 +1,21 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
-/**
- * AuthGuard - Chặn user đã đăng nhập truy cập vào trang login/register
- * Nếu user đã đăng nhập, điều hướng về trang chủ
- */
-function AuthGuard({ children }) {
+function AuthGuard({ roles = [] }) {
   const { user, isAuthenticated } = useAuth()
 
-  // Nếu đã đăng nhập, chuyển về trang chủ
-  if (isAuthenticated && user) {
-    return <Navigate to="/" replace />
+  // ❌ chưa login → đá về login
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/auth" replace />
   }
 
-  // Nếu chưa đăng nhập, cho phép truy cập
-  return children
+  // ❌ không đúng role → 403
+  if (roles.length > 0 && !roles.includes(user.role)) {
+    return <Navigate to="/403" replace />
+  }
+
+  return <Outlet />
 }
 
 export default AuthGuard

@@ -1,0 +1,73 @@
+import React, { Suspense, lazy } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Loading from '../components/Loading'
+
+// ===== Lazy load pages =====
+const Home = lazy(() => import('../pages/Home'))
+const Menu = lazy(() => import('../pages/Menu')) // dùng index.jsx
+const ProductDetail = lazy(() => import('../pages/ProductDetail'))
+
+const Login = lazy(() => import('../pages/Login'))
+const Register = lazy(() => import('../pages/Register'))
+
+const UserProfile = lazy(() => import('../pages/UserProfile'))
+const UserOrders = lazy(() => import('../pages/UserOrders'))
+const UserAddress = lazy(() => import('../pages/UserAddress'))
+
+const AdminDashboard = lazy(() => import('../pages/Admin'))
+const NotFound = lazy(() => import('../pages/NotFound'))
+
+// ===== Admin Route Guard =====
+const AdminRoute = ({ children }) => {
+  const token = localStorage.getItem('access_token')
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+  const isAdmin = currentUser?.role?.toUpperCase?.() === 'ADMIN'
+  const isStaff = currentUser?.role?.toUpperCase?.() === 'STAFF'
+
+  if (!token || !currentUser) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (!isAdmin && !isStaff) {
+    return <Navigate to="/" replace />
+  }
+
+  return children
+}
+
+// ===== Main Routes =====
+export default function AppRoutes() {
+  return (
+    <Suspense fallback={<Loading message="Đang tải..." />}>
+      <Routes>
+        {/* ===== Public ===== */}
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu/:id" element={<ProductDetail />} />
+
+        {/* ===== Auth ===== */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* ===== User ===== */}
+        <Route path="/user/profile" element={<UserProfile />} />
+        <Route path="/user/orders" element={<UserOrders />} />
+        <Route path="/user/address" element={<UserAddress />} />
+
+        {/* ===== Admin ===== */}
+        <Route
+          path="/admin/*"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+
+        {/* ===== 404 ===== */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  )
+}

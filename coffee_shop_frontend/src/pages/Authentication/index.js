@@ -1,0 +1,544 @@
+import React, { useState, useEffect } from 'react'
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Tabs,
+  Typography,
+  Row,
+  Col,
+  Grid,
+  Space,
+  Divider,
+  message,
+  Breadcrumb,
+  Modal
+} from 'antd'
+import {
+  UserOutlined,
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  GoogleOutlined,
+  FacebookOutlined
+} from '@ant-design/icons'
+import { useNavigate, useLocation } from 'react-router-dom'
+import './Authentication.css'
+import { useAuth } from '../../context/AuthContext'
+import { getUserProfile } from '../../services/user.service'
+import authenticationService from '../../services/authentication.service'
+
+const { Title, Text, Link } = Typography
+const { useBreakpoint } = Grid
+
+const Authentication = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const screens = useBreakpoint()
+  const [activeTab, setActiveTab] = useState('login')
+  const [loginForm] = Form.useForm()
+  const [registerForm] = Form.useForm()
+  const [loading, setLoading] = useState(false)
+  const { login , setUser , setAccessToken  } = useAuth()
+  const [messageApi, contextHolder] = message.useMessage()
+  const [forgotPasswordModal, setForgotPasswordModal] = useState(false)
+  const [forgotPasswordForm] = Form.useForm()
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false)
+
+  // Tự động chuyển tab dựa vào URL
+  useEffect(() => {
+    if (location.pathname === '/register') {
+      setActiveTab('register')
+    } else {
+      setActiveTab('login')
+    }
+  }, [location.pathname])
+
+  // Xử lý Google OAuth callback - khi redirect về từ Google
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const token = searchParams.get('token')
+    const success = searchParams.get('success')
+    const error = searchParams.get('error')
+
+    if (error) {
+      let errorMessage = 'Đăng nhập với Google thất bại!'
+      if (error === 'google_auth_failed') {
+        errorMessage = 'Không thể xác thực với Google. Vui lòng thử lại!'
+      } else if (error === 'server_error') {
+        errorMessage = 'Lỗi server. Vui lòng thử lại sau!'
+      }
+      message.error(errorMessage)
+      // Clean up URL
+      navigate(location.pathname, { replace: true })
+      return
+    }
+
+    if (token && success === 'google_auth_success') {
+      // Lưu token
+      localStorage.setItem('accessToken', token)
+      setAccessToken(token)
+
+      // Lấy thông tin user
+      getUserProfile()
+        .then(userProfile => {
+          const profileUser = userProfile?.user
+          if (profileUser) {
+            setUser(profileUser)
+            messageApi.success('Đăng nhập với Google thành công!')
+            
+            // Redirect based on role
+            if (profileUser.role === 'admin') {
+              localStorage.setItem('user', JSON.stringify(profileUser))
+              navigate('/admin', { replace: true })
+            } else {
+              navigate('/', { replace: true })
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user profile:', error)
+          message.error('Không thể lấy thông tin người dùng!')
+          // Clean up URL
+          navigate(location.pathname, { replace: true })
+        })
+    }
+  }, [location.search, navigate, setUser, setAccessToken, messageApi])
+  
+  // message khi đăng nhập
+  const showSuccessMessage = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Đăng nhập thành công!',
+      duration: 3,
+    });
+  };
+  // Xử lý đăng nhập
+  const handleLogin = async (values) => {
+    setLoading(true)
+    try {
+      const response = await login(values)
+      if(response){
+        showSuccessMessage()
+        // Hàm login trong AuthContext đã set user rồi, nhưng để đảm bảo, lấy lại user profile
+        try {
+          const userProfile = await getUserProfile()
+          const profileUser = userProfile?.user
+          if (profileUser) {
+            // Lưu user vào localStorage
+            localStorage.setItem('user', JSON.stringify(profileUser))
+            // Set user vào context để đảm bảo state được cập nhật
+            setUser(profileUser)
+            // Đợi một chút để React cập nhật state
+              // Navigate dựa trên role
+              if(profileUser.role === 'admin'){
+                navigate('/admin', { replace: true })
+              } else {
+                navigate('/', { replace: true })
+              }
+          }
+        } catch (profileError) {
+          console.error('Error fetching user profile:', profileError)
+          // Nếu không lấy được profile, vẫn navigate về trang chủ
+          navigate('/', { replace: true })
+        }
+    }
+    } catch (error) {
+      const errorCode = error?.status || error?.data?.statusCode || error?.data?.code
+      if (errorCode === 403) {
+        message.error('Tài khoản chưa xác thực ! Vui lòng xác thực tài khoản để đăng nhập')
+      } else {
+        message.error('Tài khoản hoặc mật khẩu không chính xác , vui lòng thử lại')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // xử lý đăng nhập với Google - redirect đến backend OAuth endpoint
+  const handleGoogleLogin = () => {
+    // Sử dụng helper function từ httpClient để đảm bảo nhất quán
+    // Import động để tránh circular dependency
+    import('../../services/httpClient').then(({ getBaseUrl }) => {
+      const apiBaseUrl = getBaseUrl()
+      // Redirect đến backend Google OAuth endpoint
+      window.location.href = `${apiBaseUrl}/auth/google`
+    }).catch(() => {
+      // Fallback nếu import thất bại
+      const apiBaseUrl = import.meta?.env?.VITE_API_BASE_URL || 
+        (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
+          ? 'http://localhost:5000/api'
+          : 'https://api.beanhotelvn.id.vn/api')
+      window.location.href = `${apiBaseUrl}/auth/google`
+    })
+  }
+  // Xử lý quên mật khẩu
+  const handleForgotPassword = async (values) => {
+    setForgotPasswordLoading(true)
+    try {
+      const response = await authenticationService.forgotPassword({ email: values.email })
+      messageApi.success('Đã gửi email hướng dẫn đặt lại mật khẩu!')
+      setForgotPasswordModal(false)
+      forgotPasswordForm.resetFields()
+    } catch (error) {
+      const errMsg = error?.data?.message || error?.message || 'Có lỗi xảy ra!'
+      messageApi.error(errMsg)
+    } finally {
+      setForgotPasswordLoading(false)
+    }
+  }
+
+  // Xử lý đăng ký
+  const handleRegister = async (values) => {
+    setLoading(true)
+    try {
+      const payload = {
+        full_name: values.fullName,
+        email: values.email,
+        password: values.password,
+      }
+      const result = await authenticationService.register(payload)
+      console.log(result);
+      message.success('Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản.')
+      registerForm.resetFields()
+      navigate('/register/success')
+    } catch (error) {
+      const errMsg = error?.data?.message || error?.message || 'Đăng ký thất bại!'
+      message.error(errMsg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Form đăng nhập
+  const LoginForm = () => (
+    <Form
+      style={{ width: screens.xs ? '100%' : '75%', margin: '0 auto' }}
+      form={loginForm}
+      name="login"
+      onFinish={handleLogin}
+      layout="vertical"
+
+    >
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[
+          { required: true, message: 'Vui lòng nhập email!' },
+          { type: 'email', message: 'Email không hợp lệ!' }
+        ]}
+      >
+        <Input
+          prefix={<MailOutlined className="input-icon" />}
+          placeholder="Nhập email của bạn"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="password"
+        label="Mật khẩu"
+        rules={[
+          { required: true, message: 'Vui lòng nhập mật khẩu!' },
+        ]}
+      >
+        <Input.Password
+          prefix={<LockOutlined className="input-icon" />}
+          placeholder="Nhập mật khẩu"
+        />
+      </Form.Item>
+
+      <Form.Item>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Link 
+            onClick={() => setForgotPasswordModal(true)} 
+            className="auth-link"
+            style={{ cursor: 'pointer' }}
+          >
+            Quên mật khẩu?
+          </Link>
+        </div>
+      </Form.Item>
+
+      <Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          loading={loading}
+          className="auth-button"
+          size="middle"
+        >
+          Đăng nhập
+        </Button>
+      </Form.Item>
+
+      <Divider plain>
+        <Text type="secondary" style={{ fontSize: screens.xs ? 12 : 14 }}>Hoặc đăng nhập với</Text>
+      </Divider>
+
+      <Space direction="vertical" style={{ width: '100%'  }} size={8}>
+        {/* Đăng nhập với Google không dùng Google Button*/}
+        <Button
+          icon={<GoogleOutlined />}
+          block
+          className="social-button google-button"
+          size="middle"
+          onClick={handleGoogleLogin}
+       
+        >
+          Đăng nhập với Google
+        </Button>
+      </Space>
+    </Form>
+  )
+
+  // Form đăng ký
+  const RegisterForm = () => (
+    <Form
+      style={{ width: screens.xs ? '100%' : '70%', margin: '0 auto' }}
+      form={registerForm}
+      name="register"
+      onFinish={handleRegister}
+      layout="vertical"
+      size='small'
+    >
+      <Form.Item
+        name="fullName"
+        label="Họ và tên"
+        rules={[
+          { required: true, message: 'Vui lòng nhập họ tên!' },
+          { min: 2, message: 'Họ tên phải có ít nhất 2 ký tự!' }
+        ]}
+      >
+        <Input
+          prefix={<UserOutlined className="input-icon" />}
+          placeholder="Nhập họ và tên"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[
+          { required: true, message: 'Vui lòng nhập email!' },
+          { type: 'email', message: 'Email không hợp lệ!' }
+        ]}
+      >
+        <Input
+          prefix={<MailOutlined className="input-icon" />}
+          placeholder="Nhập email của bạn"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="password"
+        label="Mật khẩu"
+        rules={[
+          { required: true, message: 'Vui lòng nhập mật khẩu!' },
+          { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự!' }
+        ]}
+      >
+        <Input.Password
+     
+          prefix={<LockOutlined className="input-icon" />}
+          placeholder="Nhập mật khẩu"
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="confirmPassword"
+        label="Xác nhận mật khẩu"
+        dependencies={['password']}
+        rules={[
+          { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve()
+              }
+              return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'))
+            },
+          }),
+        ]}
+      >
+        <Input.Password
+          prefix={<LockOutlined className="input-icon" />}
+          placeholder="Nhập lại mật khẩu"
+        />
+      </Form.Item>
+
+      <Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          loading={loading}
+          className="auth-button"
+          size="middle"
+        >
+          Đăng ký
+        </Button>
+      </Form.Item>
+
+      <Divider plain>
+        <Text type="secondary" style={{ fontSize: screens.xs ? 12 : 14 }}>Hoặc đăng ký với</Text>
+      </Divider>
+
+      
+    </Form>
+  )
+
+  const tabItems = [
+    {
+      key: 'login',
+      label: (
+        <span style={{ fontSize: screens.xs ? 14 : 16, fontWeight: 600 }}>
+          Đăng nhập
+        </span>
+      ),
+      children: <LoginForm />
+    },
+    {
+      key: 'register',
+      label: (
+        <span style={{ fontSize: screens.xs ? 14 : 16, fontWeight: 600 }}>
+          Đăng ký
+        </span>
+      ),
+      children: <RegisterForm />
+    }
+  ]
+
+  return (
+    <div className="auth-container container">
+      {contextHolder}
+      {/* Breadcrumb */}
+      <div style={{ marginBottom: screens.xs ? 12 : 16 , marginTop: screens.xs ? 12 : 16 }}>
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <a onClick={() => navigate('/')}>Trang chủ</a>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {activeTab === 'login' ? 'Đăng nhập' : 'Đăng ký'}
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+      <Row justify="center" align="middle" style={{ minHeight: '100vh', padding: screens.xs ? '20px 16px' : '40px 24px' }}>
+        <Col
+          xs={24}
+          sm={22}
+          md={18}
+          lg={14}
+          xl={12}
+          xxl={10}
+        >
+          <Card
+            className="auth-card"
+            bordered={false}
+          >
+            {/* Logo và tiêu đề */}
+            <div style={{ textAlign: 'center', marginBottom: screens.xs ? 16 : 20 }}>
+              <Title
+                level={screens.xs ? 3 : 2}
+                style={{ marginBottom: 6, color: '#c08a19' }}
+              >
+                Bean Hotel
+              </Title>
+              <Text type="secondary" style={{ fontSize: screens.xs ? 13 : 15 }}>
+                Chào mừng bạn đến với hệ thống đặt phòng của chúng tôi
+              </Text>
+            </div>
+
+            {/* Form tabs */}
+            <Tabs
+              activeKey={activeTab}
+              onChange={(key) => {
+                setActiveTab(key)
+                navigate(key === 'login' ? '/login' : '/register')
+              }}
+              items={tabItems}
+              centered
+              className="auth-tabs"
+            />
+
+            {/* Điều khoản */}
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <Text type="secondary" style={{ fontSize: screens.xs ? 11 : 12 }}>
+                Bằng việc đăng nhập/đăng ký, bạn đồng ý với{' '}
+                <Link href="/terms-of-service" className="auth-link">Điều khoản sử dụng</Link>
+                {' '}và{' '}
+                <Link href="/privacy-policy" className="auth-link">Chính sách bảo mật</Link>
+              </Text>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Modal Quên mật khẩu */}
+      <Modal
+        title={<span style={{ fontSize: screens.xs ? 18 : 20, fontWeight: 600 }}>Quên mật khẩu</span>}
+        open={forgotPasswordModal}
+        onCancel={() => {
+          setForgotPasswordModal(false)
+          forgotPasswordForm.resetFields()
+        }}
+        footer={null}
+        centered
+        width={screens.xs ? '90%' : screens.md ? 500 : 520}
+      >
+        <div style={{ padding: screens.xs ? '16px 0' : '20px 0' }}>
+          <Text type="secondary" style={{ fontSize: screens.xs ? 14 : 15, display: 'block', marginBottom: 24 }}>
+            Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu
+          </Text>
+          
+          <Form
+            form={forgotPasswordForm}
+            onFinish={handleForgotPassword}
+            layout="vertical"
+          >
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                { required: true, message: 'Vui lòng nhập email!' },
+                { type: 'email', message: 'Email không hợp lệ!' }
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined className="input-icon" />}
+                placeholder="Nhập email của bạn"
+                size="large"
+              />
+            </Form.Item>
+
+            <Form.Item style={{ marginBottom: 0, marginTop: 24 }}>
+              <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                <Button
+                  onClick={() => {
+                    setForgotPasswordModal(false)
+                    forgotPasswordForm.resetFields()
+                  }}
+                  size={screens.xs ? 'middle' : 'large'}
+                >
+                  Hủy
+                </Button>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={forgotPasswordLoading}
+                  className="auth-button"
+                  size={screens.xs ? 'middle' : 'large'}
+                >
+                  Gửi email
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+export default Authentication

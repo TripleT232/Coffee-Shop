@@ -59,7 +59,7 @@ function AdminLayout() {
 
     { key: '/admin/promotions', icon: <TagOutlined />, label: 'Khuyến mãi' },
 
-    { key: '/admin/reviews', icon: <StarOutlined />, label: 'Đánh giá' },
+    { key: '/admin/favorites', icon: <StarOutlined />, label: 'Yêu thích' },
 
     { key: '/admin/posts', icon: <FileTextOutlined />, label: 'Bài viết' },
 
