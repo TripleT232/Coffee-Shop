@@ -116,12 +116,12 @@ export default function AppRoutes() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="users" element={<AdminUsers />} />
 
-            <Route path="blogs" element={<AdminBlogs />} />
+            {/* <Route path="blogs" element={<AdminBlogs />} />
             <Route path="blogs/create" element={<AdminBlogsCreate />} />
             <Route path="blogs/edit/:id" element={<AdminBlogsEdit />} />
-            <Route path="blogs/:id" element={<AdminBlogsDetail />} />
+            <Route path="blogs/:id" element={<AdminBlogsDetail />} /> */}
 
-            <Route path="reports" element={<Reports />} />
+            {/* <Route path="reports" element={<Reports />} /> */}
             <Route path="profile" element={<AdminProfile />} />
 
           </Route>

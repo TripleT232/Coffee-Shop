@@ -13,7 +13,8 @@ import {
 import {
   MenuOutlined,
   UserOutlined,
-  ShoppingCartOutlined
+  ShoppingCartOutlined,
+  SearchOutlined
 } from '@ant-design/icons'
 
 import './Navigation.css'
@@ -142,7 +143,10 @@ function Navigation() {
 
             <Link to="/" className="nav-logo">
               <img src={logo} alt="logo" className="logo-img" />
-              <span className="nav-name">Yanie & Friends</span>
+              <div className="nav-text-group">
+                <span className="nav-name">Yanie & Friends</span>
+                <span className="nav-sologan">Nơi những câu chuyện được tạo nên</span>
+              </div>
             </Link>
           </div>
 
@@ -155,10 +159,11 @@ function Navigation() {
           <div className="nav-right">
 
             {/* SEARCH */}
-            <Search
-              placeholder="Bạn đang muốn tìm kiếm điều gì cho hôm nay?..."
-              onSearch={handleSearch}
-              className="nav-search"
+            <Input
+              placeholder="Bạn muốn tìm kiếm điều gì cho hôm nay?..."
+              prefix={<SearchOutlined style={{ color: '#9ca3af', marginRight: 4, fontSize: 16 }} />}
+              onPressEnter={(e) => handleSearch(e.target.value)}
+              className="nav-search-pill"
               allowClear
             />
 
@@ -207,7 +212,7 @@ function Navigation() {
       {/* MOBILE DRAWER */}
       <Drawer
         placement="left"
-        width={280}
+
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         className="nav-drawer"
@@ -217,7 +222,7 @@ function Navigation() {
         <Divider />
 
         <Search
-          placeholder="Tìm món..."
+          placeholder="Bạn muốn tìm kiếm điều gì cho hôm nay?..."
           onSearch={handleSearch}
         />
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Select, InputNumber, Form, message } from 'antd'
 import { ShoppingCartOutlined, RightOutlined } from '@ant-design/icons'
-import './OrderWidget.css'
+import './OrderingWidget.css'
 
 const { Option } = Select
 
@@ -11,6 +11,8 @@ const OrderWidget = ({ product }) => {
 
   // 💰 Tính tiền
   const calculateTotal = () => {
+    if (!product) return 0
+
     const quantity = form.getFieldValue('quantity') || 1
     const size = form.getFieldValue('size') || 'M'
 

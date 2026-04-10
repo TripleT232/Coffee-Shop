@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Row, Col, Space, Button, Typography, Divider, Select } from 'antd'
-import { PhoneFilled, MessageFilled, EnvironmentFilled, MailFilled, ClockCircleFilled, CarFilled, InfoCircleFilled, LockFilled, FileTextFilled, GlobalOutlined, DollarOutlined, ArrowRightOutlined } from '@ant-design/icons'
-// import logo from '../../assets/images/z7069108952704_e5432be9b3a36f7a517a48cad2d3807b-removebg-preview.webp'
+import { PhoneFilled, MessageFilled, EnvironmentFilled, MailFilled, ClockCircleFilled, CarFilled, InfoCircleFilled, LockFilled, FileTextFilled, GlobalOutlined, DollarOutlined, ArrowRightOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons'
+import logo from '../../assets/images/logo.webp'
 // import vietqr from '../../assets/images/qr.webp'
 const { Footer: AntFooter } = Layout
 const { Title, Text, Link } = Typography
@@ -176,13 +176,13 @@ function AppFooter() {
           <Col ></Col>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
                 <a href="#" className="hover:opacity-80 transition">
-                <Facebook size={20} />
+                <FacebookFilled style={{ fontSize: 20 }} />
                 </a>
                 <a href="#" className="hover:opacity-80 transition">
-                <Instagram size={20} />
+                <InstagramFilled style={{ fontSize: 20 }} />
                 </a>
                 <a href="#" className="hover:opacity-80 transition">
-                <Twitter size={20} />
+                <TwitterOutlined style={{ fontSize: 20 }} />
                 </a>
             </div>
           <Col xs={24} md={12} style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap' }}>

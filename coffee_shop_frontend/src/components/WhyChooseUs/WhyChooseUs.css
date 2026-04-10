@@ -1,0 +1,117 @@
+/* Tổng thể section */
+.why-choose-us-section {
+  padding: 60px 0; /* 60px trên dưới, 0 trái phải */
+  background-color: #f9fafb; /* Màu nền xám rất nhạt để tách biệt section */
+}
+
+/* Container để giới hạn chiều rộng nội dung và căn giữa */
+.why-choose-us-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px; /* Padding trái phải cho màn hình nhỏ */
+}
+
+/* Tiêu đề chính và phụ */
+.why-choose-us-title {
+  text-align: center;
+  margin-bottom: 16px;
+  color: #1f2937;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.why-choose-us-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+  .why-choose-us-card {
+    border-radius: 16px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    text-align: center;
+  }
+
+  .why-choose-us-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 26px rgba(15, 23, 42, 0.12);
+  }
+
+  .why-choose-us-card .ant-card-body {
+    padding: 36px 28px;
+  }
+
+  .why-choose-us-icon {
+    margin-bottom: 24px;
+  }
+
+  .why-choose-us-icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(192, 138, 25, 0.12);
+    color: #c08a19;
+    font-size: 28px;
+  }
+
+.why-choose-us-icon-circle .anticon {
+  font-size: 28px;
+}
+
+/* Tiêu đề của thẻ */
+.why-choose-us-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+/* Mô tả của thẻ */
+.why-choose-us-card-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* Responsive cho Tablet */
+@media (max-width: 992px) {
+  .why-choose-us-section {
+    padding: 50px 0;
+  }
+}
+
+/* Responsive cho Mobile */
+@media (max-width: 576px) {
+  .why-choose-us-section {
+    padding: 40px 0;
+  }
+
+  .why-choose-us-container {
+    padding: 0 16px; /* Giảm padding trái phải trên mobile */
+  }
+
+  .why-choose-us-title {
+    font-size: 28px; /* Giảm cỡ chữ tiêu đề */
+  }
+
+  .why-choose-us-subtitle {
+    margin-bottom: 32px;
+  }
+
+  .why-choose-us-icon {
+    font-size: 40px; /* Giảm cỡ chữ icon */
+  }
+
+  .why-choose-us-card-title {
+    font-size: 18px;
+  }
+}
