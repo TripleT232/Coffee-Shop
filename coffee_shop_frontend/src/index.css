@@ -1,9 +1,9 @@
 :root {
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #F0EBE1;
+  --bg: #FFFAF0;
   --border: #e5e4e7;
-  --code-bg: #f4f3ec;
+  --code-bg: #FFFAF0;
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
@@ -54,8 +54,16 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
+  scrollbar-gutter: stable;
   overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  /* Prevent Ant Design from adding padding-right when a modal/preview opens,
+     since scrollbar-gutter: stable already reserves the scrollbar space. */
+  padding-right: 0 !important;
 }
 
 #root {
@@ -72,7 +80,7 @@ html, body {
 
 body {
   margin: 0;
-  background-color: #F0EBE1;
+  background-color: #f9fafb;
   color: var(--text);
 }
 

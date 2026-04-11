@@ -1,9 +1,7 @@
-/* ===== BANNER CONTAINER ===== */
 .banner-slider-container {
   position: relative;
-  width: 1800px;
-  max-width: 95%; /* Đảm bảo không bị tràn màn hình nhỏ */
-  margin: 0 auto;
+  width: 100%; /* Switch back to 100% and ensure parent is full width */
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -22,9 +20,8 @@
 /* ===== IMAGE ===== */
 .banner-slider-img {
   width: 100%;
-  height: auto;
-  max-height: 900px;
-  object-fit: contain;
+  height: 870px; /* Fixed height for a consistent look */
+  object-fit: contain; /* Fill the entire area */
   object-position: center;
   background-color: transparent;
 }
@@ -43,10 +40,12 @@
 /* ===== BUTTON POSITION (FIXED TRÊN BANNER) ===== */
 .banner-content-center {
   position: absolute;
-  bottom: 30%; /* Đẩy lên cao hơn để cân đối với chữ trong ảnh */
-  left: 50%;
+  bottom: 25%;
+  left: 55%;
   transform: translateX(-50%);
   z-index: 10;
+  width: auto;
+  white-space: nowrap;
 }
 
 /* ===== BUTTON GROUP ===== */
@@ -57,49 +56,75 @@
 
 /* ===== PRIMARY BUTTON ===== */
 .btn-primary {
-  background: #8b5e3c;
-  color: #fff;
-  padding: 12px 26px;
-  border-radius: 12px;
-  font-weight: 600;
+  background: #8b5e3c !important;
+  color: #fff !important;
+  height: 56px;
+  /* Chốt cứng độ cao để thẳng tắp */
+  padding: 0 40px;
+  min-width: 220px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 20px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
+  border: 2px solid #8b5e3c !important;
 }
 
 .btn-primary svg {
   display: block;
-  transform: translateY(2px);
+  transform: translateY(1px);
 }
 
 .btn-primary:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
   background: #6f472d;
+  box-shadow: 0 10px 20px rgba(139, 94, 60, 0.2);
 }
 
 /* ===== OUTLINE BUTTON ===== */
 .btn-outline {
-  border: 2px solid #8b5e3c;
-  color: #8b5e3c; /* Đổi về màu nâu để nổi bật trên nền sáng */
-  padding: 12px 26px;
-  border-radius: 12px;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(8px);
+  border: 2px solid #8b5e3c !important;
+  color: #8b5e3c !important;
+  height: 56px;
+  /* Phải bằng xác nút Primary */
+  padding: 0 40px;
+  min-width: 220px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 20px;
+  /* Phải bằng xác nút Primary sếp nhé */
   text-decoration: none;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.5); /* Thêm nền mờ nhẹ để dễ đọc chữ */
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .btn-outline:hover {
-  background: #8b5e3c;
-  color: #fff;
-  transform: scale(1.05);
+  background: #ffffff;
+  color: #8b5e3c;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
 }
 
 /* ===== DOT INDICATOR (nếu có slider) ===== */
 .banner-dots {
+  position: absolute;
+  bottom: 25px !important;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
 /* ===== CUSTOM DOTS (Ant Design Overrides) ===== */
 .banner-slider-container .ant-carousel .slick-dots li button {
   background: #8b5e3c !important;
@@ -111,7 +136,7 @@
 .banner-slider-container .ant-carousel .slick-dots li.slick-active button {
   background: #8b5e3c !important;
   opacity: 1;
-  width: 30px !important; /* Dấu chấm đang chọn sẽ dài ra kiểu viên thuốc */
+  width: 30px !important;
 }
 
 .banner-slider-container .ant-carousel .slick-dots {
@@ -151,49 +176,76 @@
 
 @media (max-width: 768px) {
   .banner-slider-img {
-    height: 300px;
+    height: 350px;
   }
 
   .banner-slider {
-    height: 300px;
+    height: 350px;
   }
 
   .banner-content-center {
     bottom: 8%;
+    left: 50%;
+    /* Center properly on small screens */
+    white-space: normal;
+    width: 90%;
   }
 
   .banner-buttons {
     flex-direction: column;
     align-items: center;
     gap: 12px;
+    width: 100%;
   }
 
   .btn-primary,
   .btn-outline {
-    padding: 10px 20px;
-    font-size: 14px;
+    height: 48px;
+    /* Reduce height */
+    min-width: 200px;
+    /* Reduce min-width */
+    width: 100%;
+    /* Take full width of container */
+    max-width: 280px;
+    /* But don't get too wide */
+    padding: 0 20px;
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .banner-slider-img {
-    height: 220px;
+    height: 250px;
   }
 
   .banner-slider {
-    height: 220px;
+    height: 250px;
   }
 
   .banner-content-center {
     bottom: 6%;
   }
+
+  .btn-primary,
+  .btn-outline {
+    height: 42px;
+    font-size: 14px;
+    min-width: 160px;
+    gap: 8px;
+  }
+
+  .btn-primary svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* ===== WRAPPER CHUNG (sau banner) ===== */
+/*
 .home-widgets {
   width: 100%;
   padding: 40px 5%;
-  background: #f5efe6; /* nền giống menu cho đẹp */
+  background: #f5efe6;
   display: flex;
   gap: 30px;
   align-items: flex-start;
@@ -201,16 +253,15 @@
   flex-wrap: wrap;
 }
 
-/* ===== ORDERING WIDGET ===== */
 .ordering-widget-container {
   flex: 1;
   min-width: 320px;
   max-width: 500px;
 }
 
-/* ===== ABOUT WIDGET ===== */
 .about-widget-container {
   flex: 1;
   min-width: 320px;
   max-width: 500px;
 }
+*/

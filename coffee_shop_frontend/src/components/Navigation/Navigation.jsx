@@ -1,21 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import {
-  Avatar,
-  Button,
-  Divider,
-  Drawer,
-  Dropdown,
-  Space,
-  Input,
-  Badge
-} from 'antd'
-import {
-  MenuOutlined,
-  UserOutlined,
-  ShoppingCartOutlined,
-  SearchOutlined
-} from '@ant-design/icons'
+import { Avatar, Button, Divider, Drawer, Dropdown, Space, Input, Badge } from 'antd'
+import { MenuOutlined, UserOutlined, ShoppingCartOutlined, SearchOutlined } from '@ant-design/icons'
 
 import './Navigation.css'
 import logo from '../../assets/images/logo.webp'
@@ -43,10 +29,10 @@ function Navigation() {
   // NAV ITEMS
   const navItems = useMemo(() => ([
     { key: '/', label: 'Trang chủ' },
+    { key: '/about', label: 'Về chúng tôi' },
     { key: '/menu', label: 'Menu' },
     { key: '/promotions', label: 'Khuyến mãi' },
     { key: '/blogs', label: 'Câu chuyện' },
-    { key: '/about', label: 'Về chúng tôi' },
     { key: '/faq', label: 'FAQ' }
   ]), [])
 

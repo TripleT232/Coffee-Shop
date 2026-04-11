@@ -1,7 +1,7 @@
 /* Tổng thể section */
 .why-choose-us-section {
   padding: 60px 0; /* 60px trên dưới, 0 trái phải */
-  background-color: #f9fafb; /* Màu nền xám rất nhạt để tách biệt section */
+  background-color: #f9fafb; 
 }
 
 /* Container để giới hạn chiều rộng nội dung và căn giữa */
@@ -14,11 +14,13 @@
 /* Tiêu đề chính và phụ */
 .why-choose-us-title {
   text-align: center;
-  margin-bottom: 16px;
-  color: #1f2937;
-  font-weight: 700;
-  letter-spacing: 4px;
+  margin-bottom: 16px !important;
+  color: #8b5e3c !important; 
+  font-weight: 700 !important;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
+  font-family: 'Playfair Display', serif;
+  font-size: 36px !important;
 }
 
 .why-choose-us-subtitle {

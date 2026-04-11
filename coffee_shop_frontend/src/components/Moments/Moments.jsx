@@ -20,14 +20,14 @@ const defaultImages = [
 function Moments({ images = defaultImages }) {
   const settings = {
     autoplay: true,
-    autoplaySpeed: 0,
-    speed: 4000,
+    autoplaySpeed: 4000,
+    speed: 10000,
     cssEase: "linear",
     infinite: true,
     pauseOnHover: false,
     pauseOnFocus: false,
     slidesToShow: 4,
-    slidesToScroll: 1,  
+    slidesToScroll: 1,
     draggable: true,
     responsive: [
       { breakpoint: 1200, settings: { slidesToShow: 4, slidesToScroll: 1 } },
@@ -39,7 +39,7 @@ function Moments({ images = defaultImages }) {
   return (
     <div className="moments-section">
       <div className="moments-header">
-        <Title level={2} className="moments-title">Góc Nhỏ Lưu Giữ Kỷ Niệm Tại Yanie & Friends</Title>
+        <Title level={2} className="moments-title">Góc Nhỏ Lưu Giữ Kỷ Niệm Tại Yanie &amp; Friends</Title>
         <Text type="secondary">Mỗi tấm hình là một mảnh ghép tạo nên tâm hồn của Yanie & Friends ngày hôm nay.</Text>
       </div>
 

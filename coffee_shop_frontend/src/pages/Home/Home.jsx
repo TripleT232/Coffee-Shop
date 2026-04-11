@@ -6,15 +6,14 @@ import { Carousel, Row, Col, Typography, Grid } from 'antd'
 const { useBreakpoint } = Grid
 import { motion } from 'framer-motion'
 
-import OrderingWidget from '../../components/OrderingWidget/OrderingWidget'
-import AboutWidget from '../../components/AboutWidget/AboutWidget'
-import MenuList from '../../components/MenuList/MenuList'
+import BestList from '../../components/BestList/BestList'
 import banner from '../../assets/images/banner/banner.webp'
 import banner1 from "../../assets/images/banner/banner1.webp"
 import banner2 from "../../assets/images/banner/banner2.webp"
 import aboutBanner from '../../assets/images/aboutBanner.webp'
 import WhyChooseUs from '../../components/WhyChooseUs/index'
 import Moments from '../../components/Moments/Moments'
+
 
 function Home() {
     const screens = useBreakpoint()
@@ -89,23 +88,12 @@ function Home() {
 
                 </div>
             </div>
-
-            {/* ===== WIDGET ===== */}
-            <div className='home-widgets'>
-                <div className='ordering-widget-container'>
-                    <OrderingWidget />
-                </div>
-
-                <div className='about-widget-container'>
-                    <AboutWidget />
-                </div>
-            </div>
-
+            
             {/* ===== CONTENT ===== */}
             <div className='container'>
 
                 <div className='home-product-list'>
-                    <MenuList />
+                    <BestList />
                 </div>
 
                 <div className='home-page'>
