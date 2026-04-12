@@ -1,9 +1,9 @@
 import React from 'react'
 import { Carousel, Typography, Image } from 'antd'
 import './Moments.css'
-import banner1 from "../../assets/images/banner/banner1.webp"
-import banner2 from '../../assets/images/banner/banner2.webp'
-import banner from '../../assets/images/banner/banner.webp'
+import banner1 from "../../assets/images/moments/moments1.webp"
+import banner2 from '../../assets/images/moments/moments2.webp'
+import banner from '../../assets/images/moments/moments3.webp'
 
 
 const { Title, Text } = Typography

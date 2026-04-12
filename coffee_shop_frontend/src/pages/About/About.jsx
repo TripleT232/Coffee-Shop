@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Coffee, Leaf, Star, Heart } from 'lucide-react'
 import { HomeOutlined } from '@ant-design/icons'
 import './About.css'
+import Moments from '../../components/Moments/Moments'
 import aboutBanner from '../../assets/images/aboutBanner.webp'
 import moments1 from '../../assets/images/moments/moments1.webp'
 import moments2 from '../../assets/images/moments/moments2.webp'
@@ -58,7 +59,7 @@ function About() {
                     transition={{ duration: 0.8 }}
                 >
                     <p className="about-breadcrumb">
-                        <Link to="/"><HomeOutlined /> Trang chủ</Link>
+                        <Link to="/"><HomeOutlined /> Hiên nhà Yanie & Friends</Link>
                         <span> / </span>
                         <span>Về chúng tôi</span>
                     </p>
@@ -162,36 +163,7 @@ function About() {
                 </div>
             </section>
 
-            {/* ===== GALLERY STRIP ===== */}
-            <section className="about-gallery">
-                <div className="about-gallery-inner">
-                    <motion.div
-                        className="about-section-header"
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                    >
-                        <p className="about-tag">Khoảnh khắc</p>
-                        <h2 className="about-services-title">Khoảnh khắc tại Yanie &amp; Friends</h2>
-                    </motion.div>
-                    <div className="about-gallery-grid">
-                        {gallery.map((src, i) => (
-                            <motion.div
-                                key={i}
-                                className="about-gallery-item"
-                                variants={fadeUp}
-                                custom={i * 0.5}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true }}
-                            >
-                                <img src={src} alt={`Khoảnh khắc ${i + 1}`} />
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            < Moments/>
 
             {/* ===== CTA BANNER ===== */}
             <section className="about-cta-banner">

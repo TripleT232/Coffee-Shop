@@ -28,12 +28,12 @@ function Navigation() {
 
   // NAV ITEMS
   const navItems = useMemo(() => ([
-    { key: '/', label: 'Trang chủ' },
+    { key: '/', label: <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.25 }}>Hiên nhà tại<span style={{ fontSize: '0.8em', fontWeight: 500, opacity: 0.7 }}>Yanie &amp; Friends</span></span> },
     { key: '/about', label: 'Về chúng tôi' },
     { key: '/menu', label: 'Menu' },
     { key: '/promotions', label: 'Khuyến mãi' },
     { key: '/blogs', label: 'Câu chuyện' },
-    { key: '/faq', label: 'FAQ' }
+    // { key: '/faq', label: 'FAQ' }
   ]), [])
 
   const activeKey =

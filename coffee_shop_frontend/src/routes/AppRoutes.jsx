@@ -28,10 +28,10 @@ const OrderConfirmation = lazy(() => import('../pages/OrderConfirmation'))
 const OrderSuccess = lazy(() => import('../pages/OrderSuccess'))
 
 // ===== Auth =====
-const Authentication = lazy(() => import('../pages/Authentication'))
-const RegistrationSuccess = lazy(() => import('../pages/RegistrationSuccess'))
-const VerifyEmail = lazy(() => import('../pages/VerifyEmail'))
-const ResetPassword = lazy(() => import('../pages/ResetPassword'))
+const Authentication = lazy(() => import('../pages/Authentication/index'))
+const RegistrationSuccess = lazy(() => import('../pages/RegistrationSuccess/RegistrationSuccess'))
+const VerifyEmail = lazy(() => import('../pages/VerifyEmail/VerifyEmail'))
+const ResetPassword = lazy(() => import('../pages/ResetPassword/ResetPassword'))
 
 // ===== Services =====
 const Services = lazy(() => import('../pages/Services'))
@@ -52,6 +52,7 @@ const AdminUsers = lazy(() => import('../pages/Admin/Users'))
 const AdminProfile = lazy(() => import('../pages/Admin/Profile/AdminProfile'))
 
 // ===== Other =====
+const TermsOfService = lazy(() => import('../pages/TermOfService'))
 const AccessDenied = lazy(() => import('../pages/AccessDenied'))
 const NotFound = lazy(() => import('../pages/NotFound'))
 
@@ -76,10 +77,27 @@ export default function AppRoutes() {
           <Route path="services" element={<Services />} />
           <Route path="services/:id" element={<ServicesDetail />} />
           <Route path="faq" element={<FAQ />} />
+          <Route path="terms-of-service" element={<TermsOfService />} />
 
           {/* Auth */}
           <Route
             path="auth"
+            element={
+              <GuestGuard>
+                <Authentication />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <GuestGuard>
+                <Authentication />
+              </GuestGuard>
+            }
+          />
+          <Route
+            path="register"
             element={
               <GuestGuard>
                 <Authentication />

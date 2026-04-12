@@ -2,7 +2,6 @@ import React from 'react'
 import { Layout, Row, Col, Space, Button, Typography, Divider, Select } from 'antd'
 import { PhoneFilled, MessageFilled, EnvironmentFilled, MailFilled, ClockCircleFilled, CarFilled, InfoCircleFilled, LockFilled, FileTextFilled, GlobalOutlined, DollarOutlined, ArrowRightOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons'
 import logo from '../../assets/images/logo.webp'
-// import vietqr from '../../assets/images/qr.webp'
 const { Footer: AntFooter } = Layout
 const { Title, Text, Link } = Typography
 
@@ -32,7 +31,7 @@ function AppFooter() {
         >
           {/* Cột 1: Logo, Tên quán cafe, Nút đặt hàng, QR */}
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-            <Space direction="vertical" size={16} style={{ width: '100%' }}>
+            <Space orientation="vertical" size={16} style={{ width: '100%' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -93,7 +92,7 @@ function AppFooter() {
             >
               Liên hệ
             </Title>
-            <Space direction="vertical" size={12} style={{ width: '100%' }}>
+            <Space orientation="vertical" size={12} style={{ width: '100%' }}>
               <div
                 style={{ display: 'flex', alignItems: 'center', gap: 8 }}
               >
@@ -145,7 +144,7 @@ function AppFooter() {
             >
               Hỗ trợ & Chính sách
             </Title>
-            <Space direction="vertical" size={8} style={{ width: '100%' }}>
+            <Space orientation="vertical" size={8} style={{ width: '100%' }}>
               <a href="/faq" style={{ color: '#334155', display: 'block' }}>
                 <InfoCircleFilled style={{ marginRight: 8, color: '#64748b' }} />
                 Câu hỏi thường gặp
@@ -163,13 +162,6 @@ function AppFooter() {
 
         {/* Bottom bar */}
         <Row gutter={[16, 16]} align="middle">
-          {/* <Col xs={24} md={8} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <Space size={8} wrap aria-label="Ngôn ngữ & Tiền tệ">
-              <Button size="small" type="primary" ghost aria-pressed>VI</Button>
-              <Button size="small" type="text">EN</Button>
-              <Select size="small" defaultValue="VND" options={[{ value: 'VND', label: 'VND' }, { value: 'USD', label: 'USD' }]} style={{ width: 100 }} />
-            </Space>
-          </Col> */}
           <Col xs={24} md={12} style={{ textAlign: 'center' }}>
             <Text style={{ color: '#334155' }}>© {currentYear} Yanie & Friends. All rights reserved.</Text>
           </Col>
