@@ -135,7 +135,7 @@
 
 .nav-link:hover,
 .nav-item.active .nav-link {
-  color: #eab308;
+  color: #8b5e3c;
 }
 
 .navigation.scrolled .nav-link:hover,
@@ -149,9 +149,10 @@
   bottom: -4px;
   left: 0;
   width: 0;
-  height: 2px;
-  background-color: #eab308;
+  height: 3px; /* Dầy hơn một chút cho nổi bật */
+  background-color: #8b5e3c;
   transition: width 0.3s ease;
+  border-radius: 99px;
 }
 
 .navigation.scrolled .nav-item::after {

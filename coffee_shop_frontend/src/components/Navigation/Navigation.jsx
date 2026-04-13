@@ -6,6 +6,7 @@ import { MenuOutlined, UserOutlined, ShoppingCartOutlined, SearchOutlined } from
 import './Navigation.css'
 import logo from '../../assets/images/logo.webp'
 import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 const { Search } = Input
 
@@ -13,10 +14,10 @@ function Navigation() {
   const location = useLocation()
   const navigate = useNavigate()
   const { user, isAuthenticated, logout } = useAuth()
+  const { totalCartItems } = useCart()
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [cartCount, setCartCount] = useState(0)
 
   // SCROLL EFFECT
   useEffect(() => {
@@ -37,7 +38,10 @@ function Navigation() {
   ]), [])
 
   const activeKey =
-    navItems.find(item => item.key === location.pathname)?.key || '/'
+    navItems.find(item => {
+      if (item.key === '/') return location.pathname === '/'
+      return location.pathname.startsWith(item.key)
+    })?.key || '/'
 
   // SEARCH
   const handleSearch = (value) => {
@@ -154,7 +158,7 @@ function Navigation() {
             />
 
             {/* CART */}
-            <Badge count={cartCount} size="small">
+            <Badge count={totalCartItems} size="small">
               <Button
                 type="text"
                 icon={<ShoppingCartOutlined />}
@@ -215,7 +219,7 @@ function Navigation() {
         <Divider />
 
         <Button block onClick={goToCart}>
-          Giỏ hàng ({cartCount})
+          Giỏ hàng ({totalCartItems})
         </Button>
 
         <Divider />

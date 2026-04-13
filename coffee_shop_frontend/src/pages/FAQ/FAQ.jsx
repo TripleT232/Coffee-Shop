@@ -111,7 +111,7 @@ function FAQ() {
         <Breadcrumb 
           className="breadcrumb-custom"
           items={[
-            { title: <a onClick={() => navigate('/')}><HomeOutlined /> Hiên nhà tại 'Yanie & Friends'</a> },
+            { title: <a onClick={() => navigate('/')}><HomeOutlined /> Hiên nhà tại Yanie & Friends</a> },
             { title: 'Giải đáp thắc mắc' }
           ]}
         />

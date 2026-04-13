@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Coffee, Leaf, Star, Heart } from 'lucide-react'
 import { HomeOutlined } from '@ant-design/icons'
+import { Breadcrumb } from 'antd'
 import './About.css'
 import Moments from '../../components/Moments/Moments'
 import aboutBanner from '../../assets/images/aboutBanner.webp'
@@ -46,23 +46,26 @@ const services = [
 const gallery = [moments1, moments2, moments3, moments4]
 
 function About() {
+    const navigate = useNavigate();
     return (
         <div className="about-page">
 
             {/* ===== HERO BREADCRUMB ===== */}
             <div className="about-hero">
                 <div className="about-hero-overlay" />
+                <Breadcrumb 
+                    className="breadcrumb-custom-top"
+                    items={[
+                        { title: <a onClick={() => navigate('/')}><HomeOutlined /> Hiên nhà tại Yanie & Friends</a> },
+                        { title: 'Về chúng tôi' }
+                    ]}
+                />
                 <motion.div
                     className="about-hero-content"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <p className="about-breadcrumb">
-                        <Link to="/"><HomeOutlined /> Hiên nhà Yanie & Friends</Link>
-                        <span> / </span>
-                        <span>Về chúng tôi</span>
-                    </p>
                     <h1 className="about-hero-title">VỀ CHÚNG TÔI</h1>
                 </motion.div>
             </div>

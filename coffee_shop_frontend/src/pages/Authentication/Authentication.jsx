@@ -238,7 +238,7 @@ const Authentication = () => {
             style={{ display: screens.md ? 'block' : (activeTab === 'register' ? 'block' : 'none') }}
           >
             <div className="auth-form-wrapper">
-              <Title level={2} style={{ fontFamily: "'Playfair Display', serif" }}>Tạo tài khoản</Title>
+              <Title level={2} style={{ fontFamily: "'Playfair Display', serif" , color: "#BC6C25"}}>Tạo tài khoản</Title>
               <Text type="secondary" style={{ marginBottom: 20, display: 'block' }}>
                 Gia nhập gia đình Yanie &amp; Friends ngay hôm nay 🍵
               </Text>
@@ -309,7 +309,7 @@ const Authentication = () => {
             style={{ display: screens.md ? 'block' : (activeTab === 'login' ? 'block' : 'none') }}
           >
             <div className="auth-form-wrapper">
-              <Title level={2} style={{ fontFamily: "'Playfair Display', serif" }} color="#8b5e3c">Đăng nhập</Title>
+              <Title level={2} style={{ fontFamily: "'Playfair Display', serif" , color:"#BC6C25"}} >Đăng nhập</Title>
               <Text type="secondary" fontSize={{ fontSize: 13 }} style={{ marginBottom: 20, display: 'block', color: '#8b5e3c' }}>
                 Chào mừng bạn quay lại Hiên nhà 🍵
               </Text>
@@ -387,11 +387,11 @@ const Authentication = () => {
             >
               {/* Panel 1 (Visible at Login) - Invites to Register */}
               <div className="overlay-panel overlay-left">
-                <Title level={1}>Chào mừng trở lại!🎉 </Title>
-                <p style={{ textAlign: 'justify' }}>
-                  Gác lại những bộn bề ngoài cửa, mời bạn bước vào góc nhỏ của riêng mình tại <span style={{ color: '#e7e422ff', fontFamily: "'Playfair Display', serif", fontWeight: 600 }}>Yanie &amp; Friends</span>.
+                <Title level={1} style={{ color: '#BC6C25' }}>Chào mừng trở lại!🎉 </Title>
+                <p style={{ textAlign: 'justify', color: '#BC6C25' }}>
+                  Gác lại những bộn bề ngoài cửa, mời bạn bước vào góc nhỏ của riêng mình tại <span style={{ color: '#BC6C25', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>Yanie &amp; Friends</span>.
                   Chỉ cần một bước đăng nhập đơn giản để giữ cho sợi dây kết nối giữa chúng mình luôn bền chặt.
-                  Hãy để <span style={{ color: '#e7e422ff', fontFamily: "'Playfair Display', serif", fontWeight: 600 }}>Yanie &amp; Friends</span> được nhận ra bạn, được kể cho bạn nghe những điều mới mẻ và cùng bạn viết tiếp những chương tiếp theo của câu chuyện chúng mình.
+                  Hãy để <span style={{ color: '#BC6C25', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>Yanie &amp; Friends</span> được nhận ra bạn, được kể cho bạn nghe những điều mới mẻ và cùng bạn viết tiếp những chương tiếp theo của câu chuyện chúng mình.
                 </p>
 
                 <motion.div
@@ -410,8 +410,8 @@ const Authentication = () => {
 
               {/* Panel 2 (Visible at Register) - Invites to Login */}
               <div className="overlay-panel overlay-right" >
-                <Title level={1}>👋 Xin chào bạn mới!</Title>
-                <p style={{ textAlign: 'justify' }}>Mỗi người bạn ghé thăm hiên nhà <span style={{ color: '#e7e422ff', fontFamily: "'Playfair Display', serif", fontWeight: 600 }}>Yanie &amp; Friends</span> đều mang theo một câu chuyện riêng. Hãy dành chút thời gian để chúng mình được biết tên bạn, để mỗi lần bạn trở về, Yanie có thể đón tiếp bạn bằng sự chân thành nhất.
+                <Title level={1} style={{ color: '#BC6C25' }}>👋 Xin chào bạn mới!</Title>
+                <p style={{ textAlign: 'justify', color: '#BC6C25' }}>Mỗi người bạn ghé thăm hiên nhà <span style={{ color: '#BC6C25', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>Yanie &amp; Friends</span> đều mang theo một câu chuyện riêng. Hãy dành chút thời gian để chúng mình được biết tên bạn, để mỗi lần bạn trở về, Yanie có thể đón tiếp bạn bằng sự chân thành nhất.
                   Cùng nhau, chúng ta sẽ bắt đầu hành trình lưu giữ những kỷ niệm nhỏ bé nhưng ngọt ngào ngay từ hôm nay.</p>
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}

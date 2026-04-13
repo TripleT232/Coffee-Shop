@@ -1,131 +1,164 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion"; // Thêm motion cho hiệu ứng mượt mà
+import { Breadcrumb, message, Input } from "antd";
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  HeartOutlined,
+  HeartFilled,
+  HomeOutlined,
+  TagOutlined,
+  ShopOutlined
+} from "@ant-design/icons";
 import "./Menu.css";
+import { useCart } from "../../context/CartContext";
+import { CATEGORY, productsData } from "../../data/products";
+import bannerHero from "../../assets/images/banner/banner1.webp"; // Sử dụng ảnh hero sang trọng
 
-const CATEGORY = [
-  { key: "all", label: "TẤT CẢ" },
-  { key: "coffee", label: "CÀ PHÊ" },
-  { key: "espresso", label: "ESPRESSO" },
-  { key: "tea", label: "TRÀ" },
-  { key: "freeze", label: "FREEZE" },
-  { key: "cake", label: "BÁNH" },
-  { key: "other", label: "KHÁC" },
-];
-
-const productsData = [
-  {
-    id: 1,
-    name: "Phê Sữa Đá Sài Gòn",
-    price: 35000,
-    category: "coffee",
-    image: "https://images.unsplash.com/photo-1587734195503-904fca47e0e9",
-  },
-  {
-    id: 2,
-    name: "Trà Đào Cam Sả",
-    price: 45000,
-    category: "tea",
-    image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc",
-  },
-  {
-    id: 3,
-    name: "Latte Nghệ Thuật",
-    price: 55000,
-    category: "espresso",
-    image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
-  },
-  {
-    id: 4,
-    name: "Croissant Bơ",
-    price: 32000,
-    category: "cake",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff",
-  },
-  {
-    id: 5,
-    name: "Cold Brew",
-    price: 40000,
-    category: "coffee",
-    image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c",
-  },
-  {
-    id: 6,
-    name: "Matcha Đá Xay",
-    price: 42000,
-    category: "freeze",
-    image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc",
-  },
-];
-
-export default function Menu() {
+function Menu() {
+  const navigate = useNavigate();
+  const { addToCart, toggleFavorite, favorites, cart } = useCart();
   const [activeCategory, setActiveCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredProducts =
-    activeCategory === "all"
-      ? productsData
-      : productsData.filter((p) => p.category === activeCategory);
+  const filteredProducts = useMemo(() => {
+    return productsData.filter((item) => {
+      const matchCategory = activeCategory === "all" || item.category === activeCategory;
+      const matchSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+  }, [activeCategory, searchTerm]);
+
+  const handleAddToCart = (e, item) => {
+    e.stopPropagation();
+    addToCart(item.id);
+    message.success(`Đã thêm ${item.name} vào giỏ!`);
+  };
+
+  const handleToggleFavorite = (e, id) => {
+    e.stopPropagation();
+    toggleFavorite(id);
+  };
 
   return (
     <div className="menu-page">
-      {/* HEADER */}
-      <div className="menu-header">
-        <h1>MENU</h1>
-        <p>Khám phá hương vị đặc trưng của quán</p>
+      {/* ===== HERO SECTION (Giống trang About) ===== */}
+      <div className="menu-hero">
+        <div className="menu-hero-overlay" />
+        
+        <Breadcrumb
+          className="breadcrumb-custom-top"
+          items={[
+            { title: <a onClick={() => navigate("/")}><HomeOutlined /> Hiên nhà tại Yanie & Friends</a> },
+            { title: "Thực đơn" },
+          ]}
+        />
+
+        <motion.div 
+          className="menu-hero-content"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="menu-hero-title">THỰC ĐƠN</h1>
+          <p className="menu-hero-subtitle">Hương vị của sự chân thành và bình yên</p>
+        </motion.div>
       </div>
 
-      {/* CATEGORY TAB */}
-      <div className="menu-tabs">
-        {CATEGORY.map((cat) => (
-          <button
-            key={cat.key}
-            className={`tab ${
-              activeCategory === cat.key ? "active" : ""
-            }`}
-            onClick={() => setActiveCategory(cat.key)}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
-
-      {/* CONTENT */}
-      <div className="menu-content">
-        {/* LEFT FILTER */}
-        <div className="menu-filter">
-          <h3>Tìm kiếm</h3>
-          <input placeholder="Bạn muốn uống gì..." />
-
-          <h3>Danh mục</h3>
-          <ul>
-            {CATEGORY.slice(1).map((cat) => (
-              <li key={cat.key}>
-                <label>
-                  <input
-                    type="radio"
-                    name="category"
-                    checked={activeCategory === cat.key}
-                    onChange={() => setActiveCategory(cat.key)}
-                  />
-                  {cat.label}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* PRODUCT GRID */}
-        <div className="menu-products">
-          {filteredProducts.map((item) => (
-            <div className="product-card" key={item.id}>
-              <img src={item.image} alt={item.name} />
-              <div className="product-info">
-                <h4>{item.name}</h4>
-                <p>{item.price.toLocaleString()}đ</p>
-                <button>Đặt ngay</button>
-              </div>
-            </div>
+      <div className="menu-toolbar">
+        <div className="menu-tabs">
+          {CATEGORY.map((cat) => (
+            <button
+              key={cat.key}
+              className={`tab ${activeCategory === cat.key ? "active" : ""}`}
+              onClick={() => setActiveCategory(cat.key)}
+            >
+              {cat.label}
+            </button>
           ))}
         </div>
+
+        <div className="menu-toolbar-right">
+          <div className="menu-search">
+            <SearchOutlined className="search-icon" />
+            <Input
+              placeholder="Bạn muốn tìm món gì cho hôm nay?"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              bordered={false}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="menu-products">
+        {filteredProducts.length === 0 ? (
+          <div className="menu-empty">Không tìm thấy món nào 😢</div>
+        ) : (
+          filteredProducts.map((item) => (
+            <div 
+              className="product-card" 
+              key={item.id}
+              onClick={() => navigate(`/menu/${item.id}`)}
+            >
+              <div className="product-img">
+                {item.discount && (
+                  <div className="discount-tag">
+                    <TagOutlined /> -{item.discount}%
+                  </div>
+                )}
+                <button
+                  className={`favorite-circle ${favorites.includes(item.id) ? "active" : ""}`}
+                  onClick={(e) => handleToggleFavorite(e, item.id)}
+                  title="Yêu thích"
+                >
+                  <HeartFilled />
+                </button>
+                <img src={item.image} alt={item.name} />
+              </div>
+
+              <div className="product-info">
+                <div className="product-main-info">
+                  <h4 title={item.name} className="product-name-clamped">
+                    {item.isBestSeller && <span className="badge-best-mini">Best seller</span>}
+                    {item.name}
+                  </h4>
+                  <div className="price-tag">{item.price?.toLocaleString()}đ</div>
+                </div>
+
+                <div className="product-meta-row">
+                  <span className="flash-sale-badge">⚡ Flash Sale</span>
+                  <span className="meta-chip">
+                    <ShopOutlined /> Bán {item.sold || Math.floor(Math.random() * 50) + 10}
+                  </span>
+                  <span className="meta-chip likes">
+                    <HeartFilled /> {(item.likes || 100) + (favorites.includes(item.id) ? 1 : 0)}
+                  </span>
+                </div>
+
+                <div className="card-actions">
+                  <button 
+                    className="btn-order"
+                    onClick={(e) => handleAddToCart(e, item)}
+                  >
+                    Đặt ngay
+                  </button>
+                  <button
+                    className={`btn-cart-icon ${cart && cart[item.id] ? "active" : ""}`}
+                    onClick={(e) => handleAddToCart(e, item)}
+                    title="Thêm vào giỏ"
+                  >
+                    <ShoppingCartOutlined />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 }
+
+export default Menu;

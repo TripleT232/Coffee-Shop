@@ -1,11 +1,26 @@
-/* ===== SECTION ===== */
 .moments-section {
-  padding: 60px 8%;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 60px 0; /* Đổi về padding 0 để đồng bộ lề 95% */
+  width: 95%; /* Đồng bộ với các mục khác */
+  max-width: 1800px;
   margin: 0 auto;
   background: transparent;
   overflow: hidden;
+}
+
+/* Fix dứt điểm lỗi giật layout toàn trang khi mở Preview của Ant Design */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  padding-right: 0 !important; /* Chặn Ant Design tự tiện thêm padding gây thụt lề */
+}
+
+/* Luôn giữ thanh cuộn ở trạng thái ổn định để tránh nhảy khung */
+html {
+  overflow-y: scroll !important;
 }
 
 /* ===== HEADER ===== */
@@ -94,4 +109,4 @@ margin: 0 0 12px;
   .moments-title {
     font-size: 24px;
   }
-}
+}

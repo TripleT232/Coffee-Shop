@@ -6,21 +6,22 @@
 
 /* Container để giới hạn chiều rộng nội dung và căn giữa */
 .why-choose-us-container {
-  max-width: 1400px;
+  max-width: 1800px; /* Đồng bộ với BestList */
+  width: 95%; /* Đồng bộ với BestList */
   margin: 0 auto;
-  padding: 0 24px; /* Padding trái phải cho màn hình nhỏ */
 }
 
 /* Tiêu đề chính và phụ */
 .why-choose-us-title {
   text-align: center;
-  margin-bottom: 16px !important;
+  margin-top: 40px !important;
+  margin-bottom: 50px !important;
   color: #8b5e3c !important; 
-  font-weight: 700 !important;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
+  font-weight: 800 !important;
+  letter-spacing: -1px;
+  text-transform: none; /* Bỏ uppercase để trông hiện đại hơn */
   font-family: 'Playfair Display', serif;
-  font-size: 36px !important;
+  font-size: 40px !important; /* Đồng bộ với BestList */
 }
 
 .why-choose-us-subtitle {
@@ -30,19 +31,21 @@
   margin: 0 auto;
 }
 
-  .why-choose-us-card {
-    border-radius: 16px;
-    border: 1px solid #f0f0f0;
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-    text-align: center;
-  }
+.why-choose-us-card {
+  border-radius: 30px;
+  border: 1px solid rgba(139, 94, 60, 0.05);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.03);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  text-align: center;
+  background: #ffffff;
+}
 
-  .why-choose-us-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 26px rgba(15, 23, 42, 0.12);
-  }
+.why-choose-us-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 70px rgba(139, 94, 60, 0.08);
+  border-color: rgba(139, 94, 60, 0.15);
+}
 
   .why-choose-us-card .ant-card-body {
     padding: 36px 28px;
@@ -52,17 +55,24 @@
     margin-bottom: 24px;
   }
 
-  .why-choose-us-icon-circle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(192, 138, 25, 0.12);
-    color: #c08a19;
-    font-size: 28px;
-  }
+.why-choose-us-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 24px; /* Bo góc kiểu hiện đại thay vì hình tròn hẳn */
+  background: rgba(139, 94, 60, 0.08);
+  color: #8b5e3c;
+  font-size: 32px;
+  transition: all 0.3s ease;
+}
+
+.why-choose-us-card:hover .why-choose-us-icon-circle {
+  background: #8b5e3c;
+  color: #ffffff;
+  transform: rotate(10deg);
+}
 
 .why-choose-us-icon-circle .anticon {
   font-size: 28px;
