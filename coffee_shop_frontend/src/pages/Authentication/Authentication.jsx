@@ -206,7 +206,7 @@ const Authentication = () => {
                 title: (
                   <span 
                     className="breadcrumb-nav-item"
-                    style={{ color: 'white', fontWeight: 600, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} 
+                    style={{ color: '#eee8aa', fontWeight: 600, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }} 
                     onClick={() => navigate('/')}
                   >
                     <HomeOutlined /> Hiên nhà Yanie &amp; Friends
@@ -217,7 +217,7 @@ const Authentication = () => {
                 title: (
                   <span 
                     className="breadcrumb-nav-item"
-                    style={{ color: 'white', fontWeight: 600, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
+                    style={{ color:'#eee8aa' , fontWeight: 600, textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
                   >
                     {activeTab === 'login' ? 'Đăng nhập' : 'Đăng ký'}
                   </span>
@@ -387,7 +387,7 @@ const Authentication = () => {
             >
               {/* Panel 1 (Visible at Login) - Invites to Register */}
               <div className="overlay-panel overlay-left">
-                <Title level={1} style={{ color: '#BC6C25' }}>Chào mừng trở lại!🎉 </Title>
+                <Title level={1} style={{ color: '#eee8aa' }}>Chào mừng trở lại!🎉 </Title>
                 <p style={{ textAlign: 'justify', color: '#BC6C25' }}>
                   Gác lại những bộn bề ngoài cửa, mời bạn bước vào góc nhỏ của riêng mình tại <span style={{ color: '#BC6C25', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>Yanie &amp; Friends</span>.
                   Chỉ cần một bước đăng nhập đơn giản để giữ cho sợi dây kết nối giữa chúng mình luôn bền chặt.

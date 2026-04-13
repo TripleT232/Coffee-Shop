@@ -98,7 +98,7 @@ function WhyChooseUs() {
           <Row gutter={[24, 24]}>
             {features.map((feature, index) => (
               <Col xs={24} md={12} lg={6} key={feature.title}>
-                <motion.div variants={cardVariants}>
+                <motion.div variants={cardVariants} style={{ height: '100%' }}>
                   <Card hoverable className="why-choose-us-card">
                     <div className="why-choose-us-icon">
                       <span className="why-choose-us-icon-circle">{feature.icon}</span>

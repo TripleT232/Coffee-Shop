@@ -161,27 +161,36 @@ function AppFooter() {
         <Divider style={{ borderColor: 'rgba(2,6,23,0.08)', margin: '24px 0' }} />
 
         {/* Bottom bar */}
-        <Row gutter={[16, 16]} align="middle">
-          <Col xs={24} md={12} style={{ textAlign: 'center' }}>
+        <Row gutter={[16, 16]} align="middle" justify="space-between">
+          <Col xs={24} md={10} style={{ textAlign: 'center' }}>
             <Text style={{ color: '#334155' }}>© {currentYear} Yanie & Friends. All rights reserved.</Text>
           </Col>
-          <Col ></Col>
-            <div className="flex items-center gap-4 mt-4 md:mt-0">
-                <a href="#" className="hover:opacity-80 transition">
-                <FacebookFilled style={{ fontSize: 20 }} />
-                </a>
-                <a href="#" className="hover:opacity-80 transition">
-                <InstagramFilled style={{ fontSize: 20 }} />
-                </a>
-                <a href="#" className="hover:opacity-80 transition">
-                <TwitterOutlined style={{ fontSize: 20 }} />
-                </a>
-            </div>
-          <Col xs={24} md={12} style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, flexWrap: 'wrap' }}>
+
+          <Col xs={24} md={4} style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
+            <a href="#" style={{ opacity: 0.9, transition: 'opacity 0.2s ease' }}>
+              <FacebookFilled style={{ fontSize: 20 }} />
+            </a>
+            <a href="#" style={{ opacity: 0.9, transition: 'opacity 0.2s ease' }}>
+              <InstagramFilled style={{ fontSize: 20 }} />
+            </a>
+            <a href="#" style={{ opacity: 0.9, transition: 'opacity 0.2s ease' }}>
+              <TwitterOutlined style={{ fontSize: 20 }} />
+            </a>
+          </Col>
+
+          <Col
+            xs={24}
+            md={10}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 12,
+              flexWrap: 'wrap',
+            }}
+          >
             <a href="/terms-of-service" style={{ color: '#1d4ed8' }}>Điều khoản</a>
             <a href="/privacy-policy" style={{ color: '#1d4ed8' }}>Bảo mật</a>
             <a href="/cookie-policy" style={{ color: '#1d4ed8' }}>Cookie</a>
-        
           </Col>
         </Row>
       </div>

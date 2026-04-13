@@ -61,7 +61,7 @@ function Menu() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="menu-hero-title">THỰC ĐƠN</h1>
+          <h1 className="menu-hero-title" >MENU</h1>
           <p className="menu-hero-subtitle">Hương vị của sự chân thành và bình yên</p>
         </motion.div>
       </div>

@@ -31,7 +31,7 @@
 }
 
 .breadcrumb-nav-item::after {
-  content: '';
+  content: initial;
   position: absolute;
   bottom: -4px;
   left: 0;
